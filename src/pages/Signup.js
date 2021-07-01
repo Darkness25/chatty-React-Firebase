@@ -1,8 +1,37 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { signup } from '../helpers/auth';
+import { signin, signInWithGoogle } from "../helpers/auth";
+import { signup, signInWithGoogle, signInWithGitHub } from "../helpers/auth";
 
 export default class SignUp extends Component {
+
+    async googleSignIn() {
+        try {
+          await signInWithGoogle();
+        } catch (error) {
+          this.setState({ error: error.message });
+        }
+      }
+
+      async githubSignIn() {
+        try {
+          await signInWithGitHub();
+        } catch (error) {
+          this.setState({ error: error.message });
+        }
+      }
+
+      constructor() {
+        // ...
+        this.githubSignIn = this.githubSignIn.bind(this);
+      }
+
+
+      constructor() {
+        // ...
+        this.githubSignIn = this.githubSignIn.bind(this);
+      }
 
     render() {
         return (
@@ -22,6 +51,19 @@ export default class SignUp extends Component {
               <div>
                 {this.state.error ? <p>{this.state.error}</p> : null}
                 <button type="submit">Sign up</button>
+
+                <p>Or</p>
+                <button onClick={this.googleSignIn} type="button">
+                Sign up with Google
+                </button>
+
+                <button type="button" onClick={this.githubSignIn}>
+  Sign up with GitHub
+</button>
+
+
+
+
               </div>
               <hr></hr>
               <p>Already have an account? <Link to="/login">Login</Link></p>

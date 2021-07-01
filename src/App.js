@@ -36,7 +36,7 @@ function PublicRoute({ component: Component, authenticated, ...rest }) {
   
 }
 
-constructor(props); {
+constructor(props) ;{
   super(props);
   this.state = {
     error: null,
