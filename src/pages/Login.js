@@ -2,6 +2,8 @@ import React, {Component} from "react";
 import {Link} from "react-router-dom";
 import {signin, signInWithGoogle, signInWithGitHub} from "../helpers/auth";
 import 'bootstrap/dist/css/bootstrap.css';
+import Footer from '../components/Footer'
+import Header from "../components/Header";
 
 export default class Login extends Component {
     constructor() {
@@ -50,8 +52,12 @@ export default class Login extends Component {
     }
 
     render() {
+
+        
         return (
+            
             <div className="container">
+            <Header />
                 <form
                     className="mt-5 py-5 px-5"
                     autoComplete="off"
@@ -98,7 +104,9 @@ export default class Login extends Component {
                     <p>Don't have an account? <Link to="/signup">Sign up</Link></p>
                 </form>
             </div>
+            
         );
+        <Footer/>
     }
 }
       

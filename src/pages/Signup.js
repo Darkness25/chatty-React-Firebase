@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {signup, signInWithGoogle, signInWithGitHub} from "../helpers/auth";
+import Footer from '../components/Footer';
+import Header from '../components/Header';
 
 
 export default class SignUp extends Component {
@@ -58,6 +60,7 @@ export default class SignUp extends Component {
     render() {
         return (
             <div className="container">
+            <Header />
                 <form className="mt-5 py-5 px-5" onSubmit={this.handleSubmit}>
                     <h1>
                         Sign Up to 
@@ -99,6 +102,7 @@ export default class SignUp extends Component {
                     <hr></hr>
                     <p>Already have an account? <Link to="/login">Login</Link></p>
                 </form>
+                <Footer />
             </div>
         )
     }

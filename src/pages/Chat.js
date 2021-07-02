@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Header from "../components/Header";
+import Footer from "../components/Footer";
 import { auth } from "../services/firebase";
 import { db } from "../services/firebase";
 
@@ -94,6 +95,7 @@ export default class Chat extends Component {
         <div className="py-5 mx-3">
           Login in as: <strong className="text-success">{this.state.user.email}</strong>
         </div>
+        <Footer />
       </div>
     );
   }
