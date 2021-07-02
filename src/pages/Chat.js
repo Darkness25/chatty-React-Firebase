@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import Header from "../components/Header";
 import { auth } from "../services/firebase";
 import { db } from "../services/firebase";
 
@@ -69,8 +69,8 @@ export default class Chat extends Component {
 
   render() {
     return (
-      <div>
-       
+      <div className="container text-center">
+      <Header />
 
         <div className="chat-area" ref={this.myRef}>
           {/* loading indicator */}
@@ -80,7 +80,7 @@ export default class Chat extends Component {
           {/* chat area */}
           {this.state.chats.map(chat => {
             return <p key={chat.timestamp} className={"chat-bubble " + (this.state.user.uid === chat.uid ? "current-user" : "")}>
-              {chat.content}
+              {chat.content}, <strong className="text-success">{this.state.user.email}</strong>
               <br />
               <span className="chat-time float-right">{this.formatTime(chat.timestamp)}</span>
             </p>
@@ -92,7 +92,7 @@ export default class Chat extends Component {
           <button type="submit" className="btn btn-submit px-5 mt-4">Send</button>
         </form>
         <div className="py-5 mx-3">
-          Login in as: <strong className="text-info">{this.state.user.email}</strong>
+          Login in as: <strong className="text-success">{this.state.user.email}</strong>
         </div>
       </div>
     );

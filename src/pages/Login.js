@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {Link} from "react-router-dom";
 import {signin, signInWithGoogle, signInWithGitHub} from "../helpers/auth";
+import 'bootstrap/dist/css/bootstrap.css';
 
 export default class Login extends Component {
     constructor() {
@@ -55,11 +56,11 @@ export default class Login extends Component {
                     className="mt-5 py-5 px-5"
                     autoComplete="off"
                     onSubmit={this.handleSubmit}>
-                    <h1>Login to<Link className="title ml-2" to="/">Chatty</Link></h1>
+                    <h1>Login to <Link className="title ml-2" to="/">Community Chat</Link></h1>
                     <p className="lead">Fill in the form below to login to your account.</p>
-                    <div className="form-group">
+                    <div className="form-group text-center">
                         <input
-                            className="form-control"
+                            className="form-control text-center"
                             placeholder="Email"
                             name="email"
                             type="email"
@@ -67,11 +68,12 @@ export default class Login extends Component {
                             value={this.state.email}
                             required={true}
                             minLength={15}
-                            maxLength={40}/>
+                            maxLength={40}
+                            />
                     </div>
                     <div className="form-group">
                         <input
-                            className="form-control"
+                            className="form-control text-center"
                             placeholder="Password"
                             name="password"
                             onChange={this.handleChange}
@@ -79,7 +81,7 @@ export default class Login extends Component {
                             type="password"
                             required={true}
                             minLength={8}
-                            maxLength={20}/>
+                            maxLength={50}/>
                     </div>
                     <div className="form-group">
                         {this.state.error ? (<p className="text-danger">{this.state.error}</p>) : null}

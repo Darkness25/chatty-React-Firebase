@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {signup, signInWithGoogle, signInWithGitHub} from "../helpers/auth";
 
+
 export default class SignUp extends Component {
 
     constructor() {
@@ -59,8 +60,8 @@ export default class SignUp extends Component {
             <div className="container">
                 <form className="mt-5 py-5 px-5" onSubmit={this.handleSubmit}>
                     <h1>
-                        Sign Up to
-                        <Link className="title ml-2" to="/">Chatty</Link>
+                        Sign Up to 
+                        <Link className="title ml-2" to="/"> Community Chat</Link>
                     </h1>
                     <p className="lead">Fill in the form below to create an account.</p>
                     <div className="form-group">
