@@ -10,26 +10,28 @@ export default class Chat extends Component {
     this.state = {
       user: auth().currentUser,
       chats: [],
-      content: '',
+      content: "",
       readError: null,
       writeError: null,
-      loadingChats: false
+      loadingChats: false,
     };
+
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.myRef = React.createRef();
   }
-
   async componentDidMount() {
-    this.setState({ readError: null, loadingChats: true });
+    this.setState({ readError: null });
     const chatArea = this.myRef.current;
     try {
-      db.ref("chats").on("value", snapshot => {
+      db.ref("chats").on("value", (snapshot) => {
         let chats = [];
         snapshot.forEach((snap) => {
           chats.push(snap.val());
         });
-        chats.sort(function (a, b) { return a.timestamp - b.timestamp })
+        chats.sort(function (a, b) {
+          return a.timestamp - b.timestamp;
+        });
         this.setState({ chats });
         chatArea.scrollBy(0, chatArea.scrollHeight);
         this.setState({ loadingChats: false });
@@ -41,7 +43,7 @@ export default class Chat extends Component {
 
   handleChange(event) {
     this.setState({
-      content: event.target.value
+      content: event.target.value,
     });
   }
 
@@ -49,13 +51,27 @@ export default class Chat extends Component {
     event.preventDefault();
     this.setState({ writeError: null });
     const chatArea = this.myRef.current;
+    //Guardar la imagen
+    //Para ello hare una validacion ternaria
+    let imagedef = "https://definicion.de/wp-content/uploads/2019/06/perfildeusuario.jpg";
+    let image =
+      this.state.user.photoURL === null
+        ? imagedef
+        : this.state.user.photoURL;
+
+    //Para obtener parte inicial y ponerla como usuario
+    let useremail = this.state.user.email;
+    let spliteo = useremail.split("@");
+    let userend = spliteo[0];
     try {
       await db.ref("chats").push({
         content: this.state.content,
         timestamp: Date.now(),
-        uid: this.state.user.uid
+        uid: this.state.user.uid,
+        user: userend,
+        image :image,
       });
-      this.setState({ content: '' });
+      this.setState({ content: "" });
       chatArea.scrollBy(0, chatArea.scrollHeight);
     } catch (error) {
       this.setState({ writeError: error.message });
@@ -64,38 +80,66 @@ export default class Chat extends Component {
 
   formatTime(timestamp) {
     const d = new Date(timestamp);
-    const time = `${d.getDate()}/${(d.getMonth()+1)}/${d.getFullYear()} ${d.getHours()}:${d.getMinutes()}`;
+    const time = `${d.getDate()}/${
+      d.getMonth() + 1
+    }/${d.getFullYear()} ${d.getHours()}:${d.getMinutes()}`;
     return time;
   }
 
   render() {
     return (
       <div className="container text-center">
-      <Header />
-
+        <Header />
         <div className="chat-area" ref={this.myRef}>
           {/* loading indicator */}
-          {this.state.loadingChats ? <div className="spinner-border text-success" role="status">
-            <span className="sr-only">Loading...</span>
-          </div> : ""}
+          {this.state.loadingChats ? (
+            <div className="spinner-border text-success" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+          ) : (
+            ""
+          )}
           {/* chat area */}
-          {this.state.chats.map(chat => {
-            return <p key={chat.timestamp} className={"chat-bubble " + (this.state.user.uid === chat.uid ? "current-user" : "")}>
-              {chat.content}, <strong className="text-success">{this.state.user.email}</strong>
-              <br />
-              <span className="chat-time float-right">{this.formatTime(chat.timestamp)}</span>
-            </p>
+          {this.state.chats.map((chat) => {
+            return (
+              <p
+                key={chat.timestamp}
+                className={
+                  "chat-bubble " +
+                  (this.state.user.uid === chat.uid ? "current-user" : "")
+                }
+              >
+
+                <span className="chat-time float-left"><img className="image-chat" src={chat.image}></img>{chat.user}</span>
+                <br />
+                {chat.content}
+                <br />
+                <span className="chat-time float-right">
+                  {this.formatTime(chat.timestamp)}
+                </span>
+              </p>
+            );
           })}
         </div>
         <form onSubmit={this.handleSubmit} className="mx-3">
-          <textarea className="form-control" name="content" onChange={this.handleChange} value={this.state.content}></textarea>
-          {this.state.error ? <p className="text-danger">{this.state.error}</p> : null}
-          <button type="submit" className="btn btn-submit px-5 mt-4">Send</button>
+          <textarea
+            className="form-control"
+            name="content"
+            onChange={this.handleChange}
+            value={this.state.content}
+          ></textarea>
+          {this.state.error ? (
+            <p className="text-danger">{this.state.error}</p>
+          ) : null}
+          <button type="submit" className="btn btn-submit px-5 mt-4">
+            Send
+          </button>
         </form>
         <div className="py-5 mx-3">
-          Login in as: <strong className="text-success">{this.state.user.email}</strong>
+          Login in as:{" "}
+          <strong className="text-info">{this.state.user.email}</strong>
         </div>
-        <Footer />
+        <Footer/>
       </div>
     );
   }
